@@ -1,7 +1,13 @@
+'use client'
 import Link from "next/link";
 import { ThemeToggle } from "@/app/theme-toggle";
+import { useSession } from "next-auth/react";
 
 export function Navbar() {
+
+      const { data: session } = useSession();
+      const isLoggedIn = !!session;
+
     return (
         <header className=" flex h-16 items-center lg:mx-12 justify-between px-4 sticky top-0 z-50">
             <Link href="/" className="text-[32px] font-semibold tracking-tight">
@@ -10,7 +16,7 @@ export function Navbar() {
             <div className="flex items-center justify-center gap-10">
                 {/* authentication status and buttons can go here in the future */}
                 <div className="md:flex hidden items-center justify-center gap-4">
-                    {(true) ? (
+                    {(!isLoggedIn) ? (
                         <Link
                             href="/login"
                             className="px-2 py-1 transition hover:bg-foreground hover:text-background"

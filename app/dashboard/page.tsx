@@ -1,21 +1,88 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import PromptInput from "@/components/PromptInput";
 import PromptOutput from "@/components/PromptOutput";
 import RefineButton from "@/components/RefineButton";
 import RefineMore from "@/components/RefineMore";
+import { refinePrompt } from "@/app/actions/refinePrompt";
+import { useSession } from "next-auth/react";
+import SavePrompt from "@/components/SavePrompt";
+import AuthModal from "@/components/AuthModal";
+
 
 export default function DashboardPage() {
   const [rawInput, setRawInput] = useState("");
   const [refinedOutput, setRefinedOutput] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [isSaved, setIsSaved] = useState(false);
+  const [showAuthModal, setShowAuthModal] = useState(false);
 
-  const handleRefine = () => {
-    setRefinedOutput(`Refined version of: ${rawInput}`);
+
+  const { data: session } = useSession();
+  const isLoggedIn = !!session;
+  // console.log("User logged in:", isLoggedIn);
+
+
+  const handleRawInputChange = (value: string) => {
+    setRawInput(value);
+    setRefinedOutput("");
+    setIsSaved(false);
+    setError(null);
   };
-  const handleRefineMore = () => {
-    setRefinedOutput((prev) => prev + " + further refinement");
+
+
+  const handleRefine = async () => {
+    if (isLoading) return; // it will prevent multiple clicks but i have disabled the button during loading anyway
+
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      const result = await refinePrompt(rawInput);
+      setRefinedOutput(result);
+    } catch (err) {
+      setError("Failed to refine. Please try again.");
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  const handleRefineMore = async () => {
+    if (isLoading) return; // it will prevent multiple clicks but i have disabled the button during loading anyway
+
+    setError(null);
+    setIsLoading(true);
+
+    try {
+      const result = await refinePrompt(rawInput, refinedOutput);
+      setRefinedOutput(result);
+    } catch (err) {
+      console.error(err);
+      setError("Could not refine further. Try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSavePrompt = () => {
+    if (!isLoggedIn) {
+      setShowAuthModal(true);
+      return;
+    }
+
+    console.log("Prompt saved:", refinedOutput);
+    setIsSaved(true);
+  };
+
+  // this effect will close the auth modal if user logs in
+  useEffect(() => {
+  if (isLoggedIn && showAuthModal) {
+    setShowAuthModal(false);
+  }
+}, [isLoggedIn, showAuthModal]);
 
   return (
     <main className="min-h-screen flex justify-center px-4 py-16">
@@ -31,27 +98,52 @@ export default function DashboardPage() {
 
         <PromptInput
           value={rawInput}
-          onChange={setRawInput}
+          onChange={handleRawInputChange}
+          disabled={isLoading}
         />
 
         <div className="flex justify-end">
           {
             !refinedOutput.trim() ? (
-         <RefineButton
-            disabled={!rawInput.trim()}
-            onClick={handleRefine}
-          />
+              <RefineButton
+                disabled={isLoading || !rawInput.trim()}
+                isLoading={isLoading}
+                onClick={handleRefine}
+              />
             ) : (
-          <RefineMore
-            disabled={!refinedOutput.trim()}
-            onClick={handleRefineMore}
-          />
+              <RefineMore
+                disabled={isLoading || !refinedOutput.trim()}
+                isLoading={isLoading}
+                onClick={handleRefineMore}
+              />
             )
           }
         </div>
 
-        <PromptOutput output={refinedOutput} />
+        {isLoading && <PromptOutput output="Refining your idea…" />}
+        {error && (
+          <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-400">
+            {error}
+          </div>
+        )}
+        {!isLoading && !error && refinedOutput && (
+          <>
+            <PromptOutput output={refinedOutput} />
+            <div className="flex justify-end">
+              <SavePrompt
+                status={isSaved ? "saved" : "unsaved"}
+                prompt={refinedOutput}
+                disabled={isSaved}
+                onClick={handleSavePrompt} />
+            </div>
+          </>
+        )}
       </div>
+      {showAuthModal && (
+        <AuthModal onClose={() => setShowAuthModal(false)} />
+      )}
+
     </main>
   );
 }
+
