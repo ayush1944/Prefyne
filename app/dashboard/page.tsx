@@ -9,6 +9,7 @@ import { refinePrompt } from "@/app/actions/refinePrompt";
 import { useSession } from "next-auth/react";
 import SavePrompt from "@/components/SavePrompt";
 import AuthModal from "@/components/AuthModal";
+import { savePrompt } from "../actions/savePrompt";
 
 
 export default function DashboardPage() {
@@ -67,14 +68,19 @@ export default function DashboardPage() {
     }
   };
 
-  const handleSavePrompt = () => {
+  const handleSavePrompt = async () => {
     if (!isLoggedIn) {
       setShowAuthModal(true);
       return;
     }
 
-    console.log("Prompt saved:", refinedOutput);
-    setIsSaved(true);
+    try {
+      await savePrompt(rawInput,refinedOutput)
+      setIsSaved(true)
+    } catch (err) {
+      console.log(err)
+      setError("Failed to Save Prompt!")
+    }
   };
 
   // this effect will close the auth modal if user logs in

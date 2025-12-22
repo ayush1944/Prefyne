@@ -1,12 +1,12 @@
 'use client'
 import Link from "next/link";
 import { ThemeToggle } from "@/app/theme-toggle";
-import { useSession } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 
 export function Navbar() {
 
-      const { data: session } = useSession();
-      const isLoggedIn = !!session;
+    const { data: session } = useSession();
+    const isLoggedIn = !!session;
 
     return (
         <header className=" flex h-16 items-center lg:mx-12 justify-between px-4 sticky top-0 z-50">
@@ -14,7 +14,6 @@ export function Navbar() {
                 Pre<span className="text-cyan-400">fyne</span>
             </Link>
             <div className="flex items-center justify-center gap-10">
-                {/* authentication status and buttons can go here in the future */}
                 <div className="md:flex hidden items-center justify-center gap-4">
                     {(!isLoggedIn) ? (
                         <Link
@@ -23,12 +22,25 @@ export function Navbar() {
                         >
                             Login / SignUp
                         </Link>
-                    ) : <Link
-                        href="/profile"
-                        className="px-2 py-1 transition hover:bg-foreground hover:text-background"
-                    >
-                        Profile
-                    </Link>
+                    ) : (
+                        <div className="
+                            flex items-center justify-center gap-4
+                        ">
+                            <Link
+                                href="/profile"
+                                className="px-2 py-1 transition hover:bg-foreground hover:text-background"
+                            >
+                                Profile
+                            </Link>
+                            <button
+                                onClick={() => signOut()}
+                                className="px-2 py-1 cursor-pointer transition hover:bg-foreground hover:text-background"
+                            >
+                                Sign Out
+                            </button>
+                        </div>
+
+                    )
                     }
                 </div>
                 <ThemeToggle />
