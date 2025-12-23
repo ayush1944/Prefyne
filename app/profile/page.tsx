@@ -18,6 +18,8 @@
 
 import { getMyPrompts } from "@/app/actions/getMyPrompts";
 import SavedPromptItem from "@/components/SavedPromptItem";
+import Link from "next/link";
+import { FiPlus } from "react-icons/fi";
 
 export default async function ProfilePage() {
   const prompts = await getMyPrompts();
@@ -33,6 +35,7 @@ export default async function ProfilePage() {
     );
   }
 
+
   if (prompts.length === 0) {
     return (
       <main className="min-h-screen flex items-center justify-center px-4">
@@ -46,10 +49,30 @@ export default async function ProfilePage() {
   return (
     <main className="min-h-screen flex justify-center px-4 py-16">
       <div className="w-full max-w-2xl space-y-6">
-        <h1 className="text-2xl font-semibold">
-          Your saved prompts :
-        </h1>
+        <div className="flex items-center justify-between">
+          <h1 className="text-2xl font-semibold">
+            Your saved prompts :
+          </h1>
 
+          {/* <Link href={"/dashboard"} className="flex items-center justify-center gap-2 hover:opacity-50 px-2">
+            <h1 className="hidden lg:block">Generate Your New Prompt </h1>
+            <FiPlus />
+          </Link> */}
+          <Link
+            href="/dashboard"
+            className="flex items-center justify-center gap-2 px-2 hover:opacity-50"
+          >
+            {/* Text only on large screens */}
+            <h1 className="hidden lg:block font-medium">
+              Generate Your New Prompt
+            </h1>
+
+            {/* Plus icon */}
+            <FiPlus
+              className="font-bold text-3xl md:text-4xl lg:text-xl"
+            />
+          </Link>
+        </div>
         {prompts.map((prompt) => (
           <SavedPromptItem
             key={prompt.id}

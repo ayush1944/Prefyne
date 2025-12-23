@@ -6,7 +6,8 @@ import { prisma } from "@/lib/prisma";
 
 export async function savePrompt(
   rawInput: string,
-  refinedOutput: string
+  refinedOutput: string,
+  promptId?: string
 ) {
   const session = await getServerSession(authOptions);
 
@@ -14,14 +15,13 @@ export async function savePrompt(
     throw new Error("Unauthorized");
   }
 
-  const user = await prisma.user.upsert({
+  const user = await prisma.user.findUnique({
     where: { email: session.user.email },
-    update: {},
-    create: {
-      email: session.user.email,
-      name: session.user.name,
-    },
   });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
 
   const prompt = await prisma.prompt.create({
     data: {
@@ -30,6 +30,19 @@ export async function savePrompt(
       userId: user.id,
     },
   });
+
+  // if (promptId) {
+  //   return prisma.prompt.updateMany({
+  //     where: {
+  //       id: promptId,
+  //       userId: user.id,
+  //     },
+  //     data: {
+  //       rawInput,
+  //       refinedOutput,
+  //     },
+  //   });
+  // }
 
   return prompt;
 }

@@ -10,6 +10,8 @@ import { useSession } from "next-auth/react";
 import SavePrompt from "@/components/SavePrompt";
 import AuthModal from "@/components/AuthModal";
 import { savePrompt } from "../actions/savePrompt";
+import { useSearchParams } from "next/navigation";
+import { getPromptById } from "../actions/getPromptById";
 
 
 export default function DashboardPage() {
@@ -19,6 +21,21 @@ export default function DashboardPage() {
   const [error, setError] = useState<string | null>(null);
   const [isSaved, setIsSaved] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
+
+  const searchParams = useSearchParams();
+  const promptId = searchParams.get("promptId")
+
+  useEffect(() => {
+    if (!promptId) return;
+    (async () => {
+      const prompt = await getPromptById(promptId);
+      if (!prompt) return;
+
+      setRawInput(prompt.rawInput);
+      setRefinedOutput(prompt.refinedOutput);
+      setIsSaved(true)
+    })();
+  }, [promptId])
 
 
   const { data: session } = useSession();
@@ -60,6 +77,7 @@ export default function DashboardPage() {
     try {
       const result = await refinePrompt(rawInput, refinedOutput);
       setRefinedOutput(result);
+      setIsSaved(false);
     } catch (err) {
       console.error(err);
       setError("Could not refine further. Try again.");
@@ -75,7 +93,7 @@ export default function DashboardPage() {
     }
 
     try {
-      await savePrompt(rawInput,refinedOutput)
+      await savePrompt(rawInput, refinedOutput, promptId ?? undefined);
       setIsSaved(true)
     } catch (err) {
       console.log(err)
@@ -83,12 +101,13 @@ export default function DashboardPage() {
     }
   };
 
+
   // this effect will close the auth modal if user logs in
   useEffect(() => {
-  if (isLoggedIn && showAuthModal) {
-    setShowAuthModal(false);
-  }
-}, [isLoggedIn, showAuthModal]);
+    if (isLoggedIn && showAuthModal) {
+      setShowAuthModal(false);
+    }
+  }, [isLoggedIn, showAuthModal]);
 
   return (
     <main className="min-h-screen flex justify-center px-4 py-16">

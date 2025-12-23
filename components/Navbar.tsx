@@ -9,7 +9,7 @@ export function Navbar() {
     const isLoggedIn = !!session;
 
     return (
-        <header className=" flex h-16 items-center lg:mx-12 justify-between px-4 sticky top-0 z-50">
+        <header className=" flex h-16 items-center lg:px-16 justify-between px-4 sticky top-0 z-50 backdrop-blur-3xl trasi ">
             <Link href="/" className="text-[32px] font-semibold tracking-tight">
                 Pre<span className="text-cyan-400">fyne</span>
             </Link>

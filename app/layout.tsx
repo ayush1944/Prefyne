@@ -17,8 +17,8 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <body className="min-h-screen mx-auto bg-background text-foreground">
         <Providers>
-          <Navbar />
-          {children}
+            <Navbar />
+            {children}
         </Providers>
       </body>
     </html>
