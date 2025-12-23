@@ -40,7 +40,6 @@ export default function DashboardPage() {
 
   const { data: session } = useSession();
   const isLoggedIn = !!session;
-  // console.log("User logged in:", isLoggedIn);
 
 
   const handleRawInputChange = (value: string) => {
