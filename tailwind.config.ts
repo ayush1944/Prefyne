@@ -1,6 +1,7 @@
 // eslint-disable-next-line import/no-anonymous-default-export
 import type { Config } from "tailwindcss";
 
+
 const config: Config = {
   darkMode: "class",
   content: ["./app/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}"],
