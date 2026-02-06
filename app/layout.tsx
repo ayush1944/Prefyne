@@ -211,10 +211,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="min-h-screen mx-auto bg-background text-foreground">
+      <body className="relative min-h-screen mx-auto text-foreground">
         <Providers>
-          <Navbar />
-          {children}
+          <div className="relative min-h-screen">
+            <div className="fixed inset-0 -z-10 bg-container" />
+            <div className="fixed inset-0 -z-10 bg-overlay" />
+            <Navbar />
+            {children}
+          </div>
         </Providers>
       </body>
     </html>

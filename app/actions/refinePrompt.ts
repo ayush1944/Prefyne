@@ -1,15 +1,18 @@
 "use server";
 
-export async function refinePrompt(
-  rawInput: string,
-  prevRefined?: string
-) {
+import { refineWithAI } from "@/lib/refine";
 
-  await new Promise((res) => setTimeout(res, 500));
+export async function refinePrompt(rawInput: string, prevRefined?: string) {
+  try {
+    if (!rawInput?.trim()) {
+      throw new Error("Empty input");
+    }
 
-  if (prevRefined) {
-    return `${prevRefined} + further refinement (server)`;
+    const result = await refineWithAI(rawInput, prevRefined);
+
+    return result;
+  } catch (err) {
+    console.error("AI Error:", err);
+    throw new Error("AI refinement failed");
   }
-
-  return `Refined version of: ${rawInput} (server)`;
 }

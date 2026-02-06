@@ -16,3 +16,25 @@ html,
 body {
   height: 100%;
 }
+
+.bg-container {
+  background: linear-gradient(
+    to bottom,
+    #f9fafb,
+    #f1f5f9
+  );
+}
+
+.dark .bg-container {
+  background-image: url("/bg.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+.bg-overlay {
+  background: transparent;
+}
+
+.dark .bg-overlay {
+  background: rgba(0, 0, 0, 0.6);
+}
