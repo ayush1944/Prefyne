@@ -21,7 +21,7 @@ export function ThemeToggle() {
       }
       className="rounded-md border px-3 py-1 text-sm"
     >
-      {resolvedTheme === "dark" ? "🌙 Dark" : "☀️ Light"}
+      {resolvedTheme === "dark" ? "Dark" : "Light"}
     </button>
   );
 }
