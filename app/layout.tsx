@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Providers } from "./providers";
 import { Navbar } from "@/components/Navbar";
+import ThemeBackground from "@/components/ThemeBackground";
 
 export const metadata: Metadata = {
   title: {
@@ -211,16 +212,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className="relative min-h-screen mx-auto text-foreground">
+      <body className="min-h-screen bg-background text-foreground">
         <Providers>
-          <div className="relative min-h-screen">
-            <div className="fixed inset-0 -z-10 bg-container" />
-            <div className="fixed inset-0 -z-10 bg-overlay" />
-            <Navbar />
-            {children}
-          </div>
+          <ThemeBackground />
+          <Navbar />
+          {children}
         </Providers>
       </body>
+
     </html>
   );
 }

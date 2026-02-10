@@ -7,10 +7,19 @@ type PromptInputProps = {
 export default function PromptInput({ value, onChange, disabled }: PromptInputProps) {
     return (
         <textarea
-            value={value}
-            onChange={(e) => onChange(e.target.value)}
-            placeholder="Describe your rough idea, thought, or instruction…"
-            disabled={disabled}
-            className="w-full min-h-[150px] border-muted-foreground/20 focus:border-ring rounded-lg border bg-background p-4 text-sm outline-none resize-none focus:ring-2 focus:ring-ring" />
-    );  
+  value={value}
+  onChange={(e) => onChange(e.target.value)}
+  placeholder="Describe your rough idea..."
+  disabled={disabled}
+  className="
+    w-full min-h-[150px] resize-none rounded-lg border
+    bg-card text-foreground
+    border-border
+    p-4 text-sm outline-none
+    focus:ring-2 focus:ring-cyan-500
+    disabled:opacity-60
+  "
+/>
+
+    );
 }

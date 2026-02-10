@@ -1,40 +1,46 @@
 @import "tailwindcss";
 
 :root {
-  --background: 250 250 250; 
-  --foreground: 17 24 39;    
-  --muted: 229 231 235;      
+  --background: 248 250 252;      /* slate-50 */
+  --foreground: 15 23 42;         /* slate-900 */
+  --card: 255 255 255;
+  --border: 226 232 240;          /* slate-200 */
+  --muted: 100 116 139;           /* slate-500 */
 }
 
 .dark {
-  --background: 15 23 42;   
-  --foreground: 229 231 235;
-  --muted: 31 41 55;    
+  --background: 2 6 23;           /* near-black */
+  --foreground: 226 232 240;       /* slate-200 */
+  --card: 15 23 42;                /* slate-900 */
+  --border: 30 41 59;              /* slate-700 */
+  --muted: 148 163 184;            /* slate-400 */
 }
 
-html,
-body {
+html, body {
   height: 100%;
 }
 
-.bg-container {
-  background: linear-gradient(
-    to bottom,
-    #f9fafb,
-    #f1f5f9
-  );
+/* Scrollbar */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
 }
 
-.dark .bg-container {
-  background-image: url("/bg.jpg");
-  background-size: cover;
-  background-position: center;
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.05);
 }
 
-.bg-overlay {
-  background: transparent;
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.2);
 }
 
-.dark .bg-overlay {
-  background: rgba(0, 0, 0, 0.6);
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0,0,0,0.3);
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255,255,255,0.05);
+}
+
+.dark .custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.2);
 }
