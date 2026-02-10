@@ -3,21 +3,21 @@
 import { Metadata } from "next";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+// import { useRouter } from "next/navigation";
+// import { useEffect } from "react";
 
 export default function Home() {
   const { data: session, status } = useSession();
-  const router = useRouter();
+  // const router = useRouter();
 
   const isLoggedIn = !!session;
 
-  // ✅ Redirect when logged in
-  useEffect(() => {
-    if (status === "authenticated") {
-      router.push("/dashboard");
-    }
-  }, [status, router]);
+  // // ✅ Redirect when logged in
+  // useEffect(() => {
+  //   if (status === "authenticated") {
+  //     router.push("/dashboard");
+  //   }
+  // }, [status, router]);
 
   // Optional: loading state
   if (status === "loading") {
@@ -75,7 +75,7 @@ export default function Home() {
           {/* Secondary */}
           <Link
             href="/dashboard"
-            className="rounded-md border border-border px-6 py-3 font-medium text-foreground transition hover:bg-accent"
+            className="rounded-md border border-border px-6 py-3 font-medium text-foreground transition cursor-pointer hover:bg-white/20 hover:text-cyan-300 "
           >
             Try as Guest
           </Link>

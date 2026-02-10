@@ -18,23 +18,23 @@ export function Navbar() {
                     {(!isLoggedIn) ? (
                         <Link
                             href="/login"
-                            className="px-2 py-1 transition hover:bg-foreground hover:text-background"
+                            className="px-2 py-1 transition hover:bg-foreground hover:text-cyan-400 hover:text-background"
                         >
                             Login / SignUp
                         </Link>
                     ) : (
                         <div className="
-                            flex items-center justify-center gap-4
+                            flex items-center justify-center gap-4 
                         ">
                             <Link
                                 href="/profile"
-                                className="px-2 py-1 transition hover:bg-foreground hover:text-background"
+                                className="px-2 py-1 transition hover:bg-foreground hover:text-cyan-200"
                             >
                                 Profile
                             </Link>
                             <button
                                 onClick={() => signOut()}
-                                className="px-2 py-1 cursor-pointer transition hover:bg-foreground hover:text-background"
+                                className="px-2 py-1 cursor-pointer transition hover:bg-foreground hover:text-cyan-200  "
                             >
                                 Sign Out
                             </button>

@@ -22,14 +22,14 @@ export default function AuthModal({ onClose }: AuthModalProps) {
         <div className="flex flex-col gap-3 justify-between  pt-2">
           <button
             onClick={() => signIn("google")}
-            className="flex w-full items-center justify-center gap-3 rounded-md border px-4 py-2 transition hover:bg-muted"
+            className="flex w-full items-center justify-center gap-3 rounded-md border px-4 py-2 transition hover:bg-cyan-50 cursor-pointer hover:text-black"
           >
             <FcGoogle size={20} />
             <span>Continue with Google</span>
           </button>
           <button
             onClick={onClose}
-            className="rounded-md border px-4 py-2 text-sm cursor-pointer font-medium"
+            className="rounded-md border px-4 py-2 text-sm cursor-pointer hover:bg-white/20 hover:text-red-300 font-medium"
           >
             Cancel
           </button>
